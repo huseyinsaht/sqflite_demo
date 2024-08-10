@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_demo/models/product.dart';
 
 class DbHelper {
-   late Database _db;
+  late Database _db;
 
   Future<Database> get db async {
     if (_db == null) {
@@ -24,13 +24,26 @@ class DbHelper {
         "Create table products(id integer primary key, name text, description text, unitPrice integer)");
   }
 
-  Future<List> getProducts() async {
+  Future<List<Product>> getProducts() async {
     var db = await this.db;
-    return await db.query("products");
+    var result =  await db.query("products");
+    return List.generate(result.length, (i){
+      return Product.fromObject(result[i]);
+    });
   }
 
-  Future<int>insert(Product product) async {
+  Future<int> insert(Product product) async {
     var db = await this.db;
-    var result = await db.insert("products", product.toMap());
+    return await db.insert("products", product.toMap());
+  }
+
+  Future<int> delete(int id) async {
+    var db = await this.db;
+    return await db.rawDelete("delete from products where id= $id");
+  }
+
+  Future<int> update(Product product) async {
+    var db = await this.db;
+    return await db.update("products", product.toMap(), where: "id=?", whereArgs: [product.id]);
   }
 }
