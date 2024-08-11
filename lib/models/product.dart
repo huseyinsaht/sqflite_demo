@@ -1,12 +1,11 @@
 class Product {
   int? id;
-  String name = "";
-  String description = "";
-  double unitPrice = 0.0;
+  var name = "";
+  var description = "";
+  int? unitPrice;
 
   Product.withId(this.id, this.name, this.description, this.unitPrice);
-  Product(
-      {required this.name, required this.description, required this.unitPrice});
+  Product({required this.name, required this.description, required this.unitPrice});
 
   // Convert Product to a Map
   Map<String, Object?> toMap() {
@@ -20,9 +19,9 @@ class Product {
 
   // Create a Product from a Map
   Product.fromObject(dynamic o) {
-    this.id = o["id"] != null ? int.tryParse(o["id"].toString()) : null;
-    this.name = o["name"];
-    this.description = o["description"];
-    this.unitPrice = double.tryParse(o["unitPrice"].toString()) ?? 0.0;
+    id = o["id"] != null ? int.tryParse(o["id"].toString()) : null;
+    name = o["name"];
+    description = o["description"];
+    unitPrice = o["unitPrice"] != null ? int.tryParse(o["unitPrice"].toString()) : null;
   }
 }

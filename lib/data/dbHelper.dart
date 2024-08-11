@@ -5,13 +5,9 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_demo/models/product.dart';
 
 class DbHelper {
-  late Database _db;
 
   Future<Database> get db async {
-    if (_db == null) {
-      _db = await initializeDb();
-    }
-    return _db;
+    return await initializeDb();
   }
 
   Future<Database> initializeDb() async {
@@ -33,6 +29,7 @@ class DbHelper {
   }
 
   Future<int> insert(Product product) async {
+    print("=============== INSERTING ");
     var db = await this.db;
     return await db.insert("products", product.toMap());
   }
