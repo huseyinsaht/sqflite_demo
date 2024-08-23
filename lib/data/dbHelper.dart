@@ -30,7 +30,7 @@ class DbHelper {
 
   Future<int> insert(Product product) async {
     print("=============== INSERTING ");
-    var db = await this.db;
+    var db = await this.db;     
     return await db.insert("products", product.toMap());
   }
 
