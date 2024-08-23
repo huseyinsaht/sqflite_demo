@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite_demo/data/dbHelper.dart';
 import 'package:sqflite_demo/models/product.dart';
 import 'package:sqflite_demo/screens/product_add.dart';
+import 'package:sqflite_demo/screens/product_detail.dart';
 
 class ProductList extends StatefulWidget {
   @override
@@ -51,7 +52,9 @@ class _ProductListState extends State {
             ),
             title: Text(products[position].name),
             subtitle: Text(products[position].description),
-            onTap: () {},
+            onTap: () {
+              goToDetail(products[position]);
+            },
           ),
         );
       },
@@ -69,9 +72,18 @@ class _ProductListState extends State {
   void getProducts() async {
     var productFuture = dbHelper.getProducts();
     productFuture.then((data) {
-      products = data;
-      productCount = products.length;
+      setState(() {
+        products = data;
+        productCount = products.length;
+      }); // Update the UI
     });
-    setState(() {}); // Update the UI
+  }
+
+  void goToDetail(Product product) async {
+    var result = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ProductDetail(product)));
+    if (result != null && result) {
+      getProducts();
+    }
   }
 }
